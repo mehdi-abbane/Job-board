@@ -1,4 +1,3 @@
-import { SupabaseClient } from "@supabase/supabase-js";
 import supabase from "./supabaseClient";
 
 export async function getCurrentSession() {
@@ -18,3 +17,11 @@ export async function SignUp(email, password, userData) {
     return data;
 }
 
+export async function LogIn(email, password) {
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+
+    if (error) {
+        throw new Error(error)
+    }
+    return data;
+}

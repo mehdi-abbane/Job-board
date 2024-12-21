@@ -5,11 +5,11 @@ import supabase from "../services/supbase/supabaseClient";
 function ProcessData(data) {
     let userData = {
         email: data?.email,
-        description: data?.description
+        about: data?.description
     }
-    if (data.role) {
+    if (data.headline) {
         userData.displayName = data.fullname
-        userData.role = data.role;
+        userData.headline = data.headline;
         userData.skills = data.skills.split(", ");
     } else {
         userData.field = data.field;
@@ -17,8 +17,8 @@ function ProcessData(data) {
     }
     return userData;
 }
-export default async function SignUpFunctionality(data, setIsloading) {
-    setIsloading(true);
+export default async function SignUpFunctionality(data, setIsLoading) {
+    setIsLoading(true)
     const userData = ProcessData(data);
     SignUp(data.email, data.password).then(userRes => {
         UploadPfp(data.pfp).then(pfpRes => {
@@ -29,7 +29,7 @@ export default async function SignUpFunctionality(data, setIsloading) {
                         pfpUrl: pfpRes,
                         bannerUrl: bannerRes
                     }
-                }).then(res => setIsloading(false))
+                }).then(res => setIsLoading(false)).finally(() => setIsLoading(false))
             })
         })
     })

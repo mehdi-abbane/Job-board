@@ -1,41 +1,38 @@
-// pages/profile.js
-import Experience from '@/app/components/Experience';
-import Header from '@/app/components/NavBar';
-import Posts from '@/app/components/Posts';
-import ProfileOverview from '@/app/components/ProfileOverview';
+'use client'
+import ProfileHeader from '@/app/components/ProfileHeader';
+import ProfileAbout from '@/app/components/ProfileAbout';
+import ProfileSkills from '@/app/components/ProfileSkills';
+import ProfileExperiences from '@/app/components/ProfileExperiences';
+import ProfileEducation from '@/app/components/ProfileEducation';
+import ProfileCertifications from '@/app/components/ProfileCertifications';
+import GetCurrentAuthUser from './GetCurrentAuthUser';
+import { useState } from 'react';
 
-const Profile = () => {
-  const profile = {
-    picture: '/path/to/profile.jpg', // Static path for profile picture
-    name: 'John Doe',
-    headline: 'Software Engineer',
-    location: 'San Francisco, CA',
-  };
 
-  const experiences = [
-    { title: 'Software Engineer', company: 'Company XYZ', duration: '2019 - Present' },
-    { title: 'Junior Developer', company: 'Company ABC', duration: '2016 - 2019' },
-  ];
-
-  return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      <Header />
-      <div className="container mx-auto px-6 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Profile Overview */}
-          <div className="col-span-1">
-            <ProfileOverview profile={profile} />
-            <Experience experiences={experiences} />
-          </div>
-          {/* Activity/Posts Section */}
-          <div className="col-span-2">
-            <Posts />
-          </div>
+const ProfilePage = () => {
+    // Sample user data - you'd replace this with actual user data from your backend
+    const [userData, setUserData] = useState(null);
+    GetCurrentAuthUser(setUserData)
+    if (userData == null) return <div>Loading....</div>
+    return (
+        <div className="container mx-auto px-4 py-8 max-w-4xl">
+            {/* Profile Header */}
+            <ProfileHeader website={userData.website} headline={userData.headline} location={userData.location} email={userData.location} />
+            {/* About Section */}
+            <ProfileAbout about={userData.about} />
+            {/* Skills Section */}
+            <ProfileSkills skills={userData.skills} />
+            {/* Experience Section */}
+            <ProfileExperiences experience={userData.experience} />
+            {/* Education & Certifications */}
+            <div className="grid md:grid-cols-2 gap-6">
+                {/* Education Card */}
+                <ProfileEducation education={userData.education} />
+                {/* Certifications Card */}
+                <ProfileCertifications certifications={userData.certifications} />
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
-export default Profile;
-
+export default ProfilePage;
